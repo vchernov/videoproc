@@ -11,10 +11,10 @@
 
 namespace videoproc {
 
-class VideoHandler {
+class Pipeline {
 public:
-    VideoHandler(const std::string& name);
-    virtual ~VideoHandler();
+    Pipeline(const std::string& name);
+    virtual ~Pipeline();
 
     void play();
     void pause();

@@ -1,15 +1,16 @@
 #pragma once
 
-#include "VideoHandler.h"
+#include "Pipeline.h"
 
 #include <functional>
 #include <list>
 
 namespace videoproc {
 
-class VideoReader: public VideoHandler {
+class VideoReader: public Pipeline {
 public:
     using FrameHandler = std::function<void(VideoReader*, uint8_t*, size_t)>;
+    using FrameHandlerContainer = std::list<FrameHandler>;
 
     VideoReader(const std::string& name);
     virtual ~VideoReader() override;
@@ -18,11 +19,11 @@ public:
     int getWidth() const;
     int getHeight() const;
 
-    std::list<FrameHandler> newPrerollCallbacks;
-    std::list<FrameHandler> newBufferCallbacks;
+    FrameHandlerContainer& getNewPrerollCallbacks();
+    FrameHandlerContainer& getNewBufferCallbacks();
 
 protected:
-    GstElement* appsink;
+    GstElement* appSink;
 
 private:
     static void onNewPreroll(GstElement* appSink, VideoReader* reader);
@@ -37,6 +38,9 @@ private:
     std::string mime;
     int width = 0;
     int height = 0;
+
+    FrameHandlerContainer newPrerollCallbacks;
+    FrameHandlerContainer newBufferCallbacks;
 };
 
 }

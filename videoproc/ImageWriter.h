@@ -1,12 +1,12 @@
 #pragma once
 
-#include "VideoHandler.h"
+#include "Pipeline.h"
 
 #include <memory>
 
 namespace videoproc {
 
-class ImageWriter : public VideoHandler {
+class ImageWriter : public Pipeline {
 public:
     static std::unique_ptr<ImageWriter> createBmpWriter(const std::string& name);
     static std::unique_ptr<ImageWriter> createJpegWriter(const std::string& name);

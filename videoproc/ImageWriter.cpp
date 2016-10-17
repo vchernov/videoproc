@@ -26,7 +26,7 @@ std::unique_ptr<ImageWriter> ImageWriter::createJpegWriter(const std::string& na
     return writer;
 }
 
-ImageWriter::ImageWriter(const std::string& name) : VideoHandler(name) {
+ImageWriter::ImageWriter(const std::string& name) : Pipeline(name) {
     appSrc = gst_element_factory_make("appsrc", nullptr);
     g_assert(appSrc);
     gst_bin_add(GST_BIN(pipeline), appSrc);
@@ -39,14 +39,14 @@ ImageWriter::ImageWriter(const std::string& name) : VideoHandler(name) {
 }
 
 void ImageWriter::setLocation(const std::string& location) {
-    g_object_set(fileSink, "location", location.c_str(), NULL);
+    g_object_set(fileSink, "location", location.c_str(), nullptr);
 }
 
 void ImageWriter::write(GstBuffer* buffer) {
     play();
 
     GstCaps* caps = gst_buffer_get_caps(buffer);
-    g_object_set(appSrc, "caps", caps, NULL);
+    g_object_set(appSrc, "caps", caps, nullptr);
     gst_caps_unref(caps);
 
     GstFlowReturn ret;

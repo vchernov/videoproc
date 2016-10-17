@@ -4,19 +4,19 @@
 
 namespace videoproc {
 
-VideoReader::VideoReader(const std::string& name) : VideoHandler(name) {
-    appsink = gst_element_factory_make("appsink", nullptr);
-    g_assert(appsink);
+VideoReader::VideoReader(const std::string& name) : Pipeline(name) {
+    appSink = gst_element_factory_make("appsink", nullptr);
+    g_assert(appSink);
 
-    gst_bin_add(GST_BIN(pipeline), appsink);
-    g_object_set(appsink, "emit-signals", true, "sync", true, nullptr);
-    prerollSigId = g_signal_connect(appsink, "new-preroll", G_CALLBACK(onNewPreroll), this);
-    bufferSigId = g_signal_connect(appsink, "new-buffer", G_CALLBACK(onNewBuffer), this);
+    gst_bin_add(GST_BIN(pipeline), appSink);
+    g_object_set(appSink, "emit-signals", true, "sync", true, nullptr);
+    prerollSigId = g_signal_connect(appSink, "new-preroll", G_CALLBACK(onNewPreroll), this);
+    bufferSigId = g_signal_connect(appSink, "new-buffer", G_CALLBACK(onNewBuffer), this);
 }
 
 VideoReader::~VideoReader() {
-    g_signal_handler_disconnect(appsink, prerollSigId);
-    g_signal_handler_disconnect(appsink, bufferSigId);
+    g_signal_handler_disconnect(appSink, prerollSigId);
+    g_signal_handler_disconnect(appSink, bufferSigId);
 }
 
 const std::string& VideoReader::getMime() const {
@@ -29,6 +29,14 @@ int VideoReader::getWidth() const {
 
 int VideoReader::getHeight() const {
     return height;
+}
+
+VideoReader::FrameHandlerContainer& VideoReader::getNewPrerollCallbacks() {
+    return newPrerollCallbacks;
+}
+
+VideoReader::FrameHandlerContainer& VideoReader::getNewBufferCallbacks() {
+    return newBufferCallbacks;
 }
 
 void VideoReader::onNewPreroll(GstElement* appSink, VideoReader* reader) {
