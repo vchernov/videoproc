@@ -4,8 +4,8 @@
 
 namespace videoproc {
 
-std::unique_ptr<ImageWriter> ImageWriter::createBmpWriter(const std::string& name) {
-    auto writer = std::make_unique<ImageWriter>(name);
+std::unique_ptr<ImageWriter> ImageWriter::createBmpWriter() {
+    auto writer = std::make_unique<ImageWriter>();
 
     GstElement* encoder = gst_element_factory_make("ffenc_bmp", nullptr);
     g_assert(encoder);
@@ -15,8 +15,8 @@ std::unique_ptr<ImageWriter> ImageWriter::createBmpWriter(const std::string& nam
     return writer;
 }
 
-std::unique_ptr<ImageWriter> ImageWriter::createJpegWriter(const std::string& name) {
-    auto writer = std::make_unique<ImageWriter>(name);
+std::unique_ptr<ImageWriter> ImageWriter::createJpegWriter() {
+    auto writer = std::make_unique<ImageWriter>();
 
     GstElement* encoder = gst_element_factory_make("jpegenc", nullptr);
     g_assert(encoder);
@@ -26,7 +26,7 @@ std::unique_ptr<ImageWriter> ImageWriter::createJpegWriter(const std::string& na
     return writer;
 }
 
-ImageWriter::ImageWriter(const std::string& name) : Pipeline(name) {
+ImageWriter::ImageWriter() {
     appSrc = gst_element_factory_make("appsrc", nullptr);
     g_assert(appSrc);
     gst_bin_add(GST_BIN(pipeline), appSrc);

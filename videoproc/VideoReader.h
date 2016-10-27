@@ -9,18 +9,15 @@ namespace videoproc {
 
 class VideoReader: public Pipeline {
 public:
-    using FrameHandler = std::function<void(VideoReader*, uint8_t*, size_t)>;
-    using FrameHandlerContainer = std::list<FrameHandler>;
-
-    VideoReader(const std::string& name);
-    virtual ~VideoReader() override;
+    VideoReader();
+    ~VideoReader() override;
 
     const std::string& getMime() const;
     int getWidth() const;
     int getHeight() const;
 
-    FrameHandlerContainer& getNewPrerollCallbacks();
-    FrameHandlerContainer& getNewBufferCallbacks();
+    std::list<std::function<void(VideoReader*, uint8_t*, size_t)>> newPreroll;
+    std::list<std::function<void(VideoReader*, uint8_t*, size_t)>> newBuffer;
 
 protected:
     GstElement* appSink;
@@ -38,9 +35,6 @@ private:
     std::string mime;
     int width = 0;
     int height = 0;
-
-    FrameHandlerContainer newPrerollCallbacks;
-    FrameHandlerContainer newBufferCallbacks;
 };
 
 }

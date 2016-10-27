@@ -6,7 +6,7 @@ namespace videoproc {
 
 class VideoFileReader : public VideoReader {
 public:
-    VideoFileReader(const std::string& name, const std::string& location);
+    VideoFileReader(const std::string& location);
 
     std::string getLocation();
 

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.2)
 project(videoproc)
 
+option(VIDEOPROC_BUILD_EXAMPLES "Build example programs" OFF)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 find_package(PkgConfig REQUIRED)
@@ -18,7 +20,14 @@ add_library(videoproc STATIC
     videoproc/VideoFileReader.cpp
     videoproc/ImageWriter.h
     videoproc/ImageWriter.cpp
+    videoproc/TeePipeline.cpp
+    videoproc/TeePipeline.h
+    videoproc/ElementProperties.h
 )
 
 install(DIRECTORY videoproc DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(TARGETS videoproc DESTINATION lib)
+
+if (VIDEOPROC_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()

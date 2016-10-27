@@ -2,7 +2,7 @@
 
 namespace videoproc {
 
-VideoFileReader::VideoFileReader(const std::string& name, const std::string& location) : VideoReader(name) {
+VideoFileReader::VideoFileReader(const std::string& location) {
     fileSrc = gst_element_factory_make("filesrc", nullptr);
     g_assert(fileSrc);
     gst_bin_add(GST_BIN(pipeline), fileSrc);

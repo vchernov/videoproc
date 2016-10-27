@@ -4,7 +4,7 @@
 
 namespace videoproc {
 
-VideoReader::VideoReader(const std::string& name) : Pipeline(name) {
+VideoReader::VideoReader() {
     appSink = gst_element_factory_make("appsink", nullptr);
     g_assert(appSink);
 
@@ -29,14 +29,6 @@ int VideoReader::getWidth() const {
 
 int VideoReader::getHeight() const {
     return height;
-}
-
-VideoReader::FrameHandlerContainer& VideoReader::getNewPrerollCallbacks() {
-    return newPrerollCallbacks;
-}
-
-VideoReader::FrameHandlerContainer& VideoReader::getNewBufferCallbacks() {
-    return newBufferCallbacks;
 }
 
 void VideoReader::onNewPreroll(GstElement* appSink, VideoReader* reader) {
@@ -73,7 +65,7 @@ void VideoReader::processNewPreroll(GstBuffer* buffer) {
 
     uint8_t* data = GST_BUFFER_DATA(buffer);
     size_t size = GST_BUFFER_SIZE(buffer);
-    for (const auto& callback : newPrerollCallbacks) {
+    for (const auto& callback : newPreroll) {
         callback(this, data, size);
     }
 }
@@ -81,7 +73,7 @@ void VideoReader::processNewPreroll(GstBuffer* buffer) {
 void VideoReader::processNewBuffer(GstBuffer* buffer) {
     uint8_t* data = GST_BUFFER_DATA(buffer);
     size_t size = GST_BUFFER_SIZE(buffer);
-    for (const auto& callback : newBufferCallbacks) {
+    for (const auto& callback : newBuffer) {
         callback(this, data, size);
     }
 }

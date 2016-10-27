@@ -8,11 +8,10 @@ namespace videoproc {
 
 class ImageWriter : public Pipeline {
 public:
-    static std::unique_ptr<ImageWriter> createBmpWriter(const std::string& name);
-    static std::unique_ptr<ImageWriter> createJpegWriter(const std::string& name);
+    static std::unique_ptr<ImageWriter> createBmpWriter();
+    static std::unique_ptr<ImageWriter> createJpegWriter();
 
-    ImageWriter(const std::string& name);
-    virtual ~ImageWriter() = default;
+    ImageWriter();
 
     void setLocation(const std::string& location);
 
