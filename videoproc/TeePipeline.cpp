@@ -49,6 +49,23 @@ void TeePipeline::attachAllBranches() {
     }
 }
 
+void TeePipeline::detachAllBranches() {
+    for (auto& it : branches) {
+        detach(it.first, it.second);
+    }
+}
+
+void TeePipeline::removeAllBranches() {
+    for (auto& it : branches) {
+        remove(it.first, it.second);
+    }
+}
+
+void TeePipeline::stop() {
+    Pipeline::stop();
+    removeAllBranches();
+}
+
 GstPad* TeePipeline::attach(GstElement* elem) {
     GstPad* srcPad = gst_element_get_request_pad(tee, "src%d");
     GstPad* sinkPad = gst_element_get_static_pad(elem, "sink");

@@ -12,6 +12,10 @@ public:
     void createViewBranch(int width, int height);
 
     void attachAllBranches();
+    void detachAllBranches();
+    void removeAllBranches();
+
+    void stop() override;
 
 protected:
     GstPad* attach(GstElement* elem);
